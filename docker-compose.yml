@@ -1,0 +1,27 @@
+services:
+  db:
+    # timescaledb-ha bundles pg_textsearch (BM25) and pgvector.
+    # Pinned by digest: PostgreSQL 17.11, pg_textsearch 1.5.1, pgvector 0.8.7.
+    image: timescale/timescaledb-ha:pg17@sha256:e801086738f54cd32949baae7c78033fb774bca3c3abb50e1af59a72caf745e9
+    container_name: wiki-search-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-wiki}
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_textsearch
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/home/postgres/pgdata
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

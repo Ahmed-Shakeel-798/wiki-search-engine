@@ -25,6 +25,28 @@ A Wikipedia search engine built entirely within PostgreSQL, using BM25 keyword m
         └──────────────────────┘  │
 ```
 
+## Getting started
+
+### 1. Start PostgreSQL
+
+Requires Docker. The database image bundles PostgreSQL 17, pg_textsearch 1.5.1 and pgvector 0.8.7.
+
+```bash
+docker compose up -d
+```
+
+The first start downloads a ~4 GB image and creates both extensions automatically (`db/init/01-extensions.sql`).
+
+### 2. Check the extensions loaded
+
+```bash
+docker exec -it wiki-search-db psql -U postgres -d wiki -c "SELECT extname, extversion FROM pg_extension;"
+```
+
+You should see `pg_textsearch | 1.5.1` and `vector | 0.8.7`.
+
+Connection string: `postgresql://postgres:postgres@localhost:5432/wiki`
+
 ## Status
 
 🚧 Work in progress.
