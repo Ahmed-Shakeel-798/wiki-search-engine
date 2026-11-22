@@ -17,6 +17,8 @@ services:
     volumes:
       - pgdata:/home/postgres/pgdata
       - ./db/init:/docker-entrypoint-initdb.d:ro
+      # Lets psql inside the container run our SQL files: psql -f /db/<file>.sql
+      - ./db:/db:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s

@@ -94,6 +94,20 @@ python scripts/load.py                # all 241,787 articles
 
 Safe to re-run: articles already in the table are skipped.
 
+## Lessons
+
+Each lesson is a SQL file in `db/` that prints its results with timings. Run them in order:
+
+```bash
+docker exec wiki-search-db psql -U postgres -d wiki -f /db/02_baseline.sql
+docker exec wiki-search-db psql -U postgres -d wiki -f /db/03_bm25.sql
+```
+
+| Lesson | File | What it shows |
+|---|---|---|
+| 02 | `db/02_baseline.sql` | Built-in full-text search: no index vs GIN index, and why "all words must match" hurts |
+| 03 | `db/03_bm25.sql` | BM25 index with pg_textsearch: ranked top-k results, rare words weigh more |
+
 ## Status
 
 🚧 Work in progress.
