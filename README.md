@@ -63,6 +63,37 @@ Get-Content db/schema.sql | docker exec -i wiki-search-db psql -U postgres -d wi
 
 Creates the `articles` table. Safe to run more than once.
 
+### 4. Set up Python
+
+Requires Python 3.11 or newer.
+
+macOS / Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+### 5. Load the articles
+
+Downloads the Simple English Wikipedia snapshot (20231101.simple) from Hugging Face and loads it into `articles`.
+
+```bash
+python scripts/load.py --limit 1000   # quick test
+python scripts/load.py                # all 241,787 articles
+```
+
+Safe to re-run: articles already in the table are skipped.
+
 ## Status
 
 🚧 Work in progress.

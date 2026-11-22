@@ -1,0 +1,4 @@
+psycopg[binary]>=3.2,<4
+pyarrow>=18
+huggingface_hub>=0.28
+python-dotenv>=1.0,<2
