@@ -47,6 +47,14 @@ You should see `pg_textsearch | 1.5.1` and `vector | 0.8.7`.
 
 Connection string: `postgresql://postgres:postgres@localhost:5432/wiki`
 
+### 3. Create the schema
+
+```bash
+docker exec -i wiki-search-db psql -U postgres -d wiki < db/schema.sql
+```
+
+Creates the `articles` table. Safe to run more than once.
+
 ## Status
 
 🚧 Work in progress.
