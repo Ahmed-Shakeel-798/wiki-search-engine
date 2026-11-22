@@ -49,8 +49,16 @@ Connection string: `postgresql://postgres:postgres@localhost:5432/wiki`
 
 ### 3. Create the schema
 
+macOS / Linux:
+
 ```bash
 docker exec -i wiki-search-db psql -U postgres -d wiki < db/schema.sql
+```
+
+Windows PowerShell:
+
+```powershell
+Get-Content db/schema.sql | docker exec -i wiki-search-db psql -U postgres -d wiki
 ```
 
 Creates the `articles` table. Safe to run more than once.
