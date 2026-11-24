@@ -101,12 +101,14 @@ Each lesson is a SQL file in `db/` that prints its results with timings. Run the
 ```bash
 docker exec wiki-search-db psql -U postgres -d wiki -f /db/02_baseline.sql
 docker exec wiki-search-db psql -U postgres -d wiki -f /db/03_bm25.sql
+docker exec wiki-search-db psql -U postgres -d wiki -f /db/04_search_fields.sql
 ```
 
 | Lesson | File | What it shows |
 |---|---|---|
 | 02 | `db/02_baseline.sql` | Built-in full-text search: no index vs GIN index, and why "all words must match" hurts |
 | 03 | `db/03_bm25.sql` | BM25 index with pg_textsearch: ranked top-k results, rare words weigh more |
+| 04 | `db/04_search_fields.sql` | Making titles count: four ways to combine title and body, compared side by side |
 
 ## Status
 
