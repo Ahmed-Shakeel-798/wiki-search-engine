@@ -121,3 +121,23 @@ A:
 
 **Q: Why use `SET maintenance_work_mem` before `CREATE INDEX`?**\
 A: It gives the index build more memory, which makes it faster.
+
+## Lesson 03: BM25 Index (Flashcards)
+
+**Q: Why do we need a BM25 index when we already have a GIN index?**\
+A: GIN finds the articles that **match**. A BM25 index finds the articles that match **best**. GIN stores no information about relevance.
+
+**Q: What are the three problems with GIN + `ts_rank`?**\
+A:
+1. **Every match is scored:** to return the top 10, Postgres runs `ts_rank()` on *every* matching row and then sorts them all.
+2. **Weak ranking:** `ts_rank` looks only inside each article. It doesn't weight rare words more (no IDF) and doesn't properly correct for long articles.
+3. **All words must match:** with AND, one missing word drops a good article. Switching to OR adds even more rows to score.
+
+**Q: What does a BM25 index store that GIN doesn't?**\
+A: The statistics needed for ranking: how often each word appears in each article, how many articles contain each word (for IDF), and each article's length compared with the average.
+
+**Q: Why does a BM25 query need no `Sort` step?**\
+A: The scores are built into the index, so it reads results in best-first order and **stops after the top k**. The **Block-Max WAND** algorithm skips whole blocks of articles that can't reach the top k.
+
+**Q: Do we still need the GIN index?**\
+A: No. `pg_textsearch` can also do exact filtering with `@@` through the BM25 index, so the GIN index only takes disk space. It is dropped in lesson 04.
